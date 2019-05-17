@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="app">
+    {{ message }}
+    <global-component></global-component>
+    <local-component></local-component>
+  </div>
+
+  <div id="app2">
+    {{message}}
+    <global-component></global-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    Vue.component('global-component', {
+        template : '<div>전역 컴포넌트</div>'
+    });
+
+    new Vue({
+        el : '#app',
+        data : function() {
+            return {
+                message : 'Hello World'
+            }
+        },
+        components : {
+          'local-component' : {
+            data : function() {
+              return {
+                localMessage : 'It is 내부 로컬 메세지'
+              }
+            },
+            template : '<div>This Is local Component : {{localMessage}}</div>'
+          }
+        }
+    });
+
+    new Vue({
+      el : '#app2',
+      data : {
+        message : '이것은 app2의 메세지'
+      }
+    });
+
+  </script>
+</body>
+</html>
