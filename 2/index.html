@@ -9,26 +9,28 @@
 
   <div id="app">
     {{ message }}
-    <global-component></global-component>
-    <local-component></local-component>
+    <!-- v-bind와 @bind 동일 -->
+    <global-component v-bind:gloprops="message"></global-component>
+    <local-component @bind:propsdata="message"></local-component>
   </div>
 
   <div id="app2">
     {{message}}
-    <global-component></global-component>
+    <global-component v-bind:gloprops="sendMessage"></global-component>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script>
     Vue.component('global-component', {
-        template : '<div>전역 컴포넌트</div>'
+        props : ['gloprops'],
+        template : '<div>전역 컴포넌트 : (부모 component에서 넘겨받은 값){{ gloprops }}</div>'
     });
 
     new Vue({
         el : '#app',
         data : function() {
             return {
-                message : 'Hello World'
+                message : 'It is commonpont message'
             }
         },
         components : {
@@ -46,7 +48,8 @@
     new Vue({
       el : '#app2',
       data : {
-        message : '이것은 app2의 메세지'
+        message : '이것은 app2의 메세지',
+        sendMessage : 'app2 Vue의 sendMessage'
       }
     });
 
