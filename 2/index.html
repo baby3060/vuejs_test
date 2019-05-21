@@ -12,7 +12,9 @@
     {{ message }}
     <!-- v-bind와 @bind 동일 -->
     <child-component v-on:callpa="showAlert"></child-component>
-    <child-component2 v-on:callpa="showAlert2"></child-component2>
+    <child-component2 v-on:callpa="showAlert2">
+
+    </child-component2>
 
   </div>
 
@@ -21,23 +23,30 @@
 
   // 하위 컴포넌트 : childComponent
   var childComponent = {
-    template : '<div><button v-on:click=sendEvent>버튼</button></div>',
+    template : '<div>Left Component : <button v-on:click=sendEvent>첫 번째 버튼</button></div>',
     methods: {
       sendEvent: function() {
         this.$emit('callpa');
       }
     }
+  }
+
+  var child2Inner = {
+    template : '<div>Right Component Inner Left Component<button>내부 버튼</button></div>'
   }
 
   var childComponent2 = {
-    template : '<div><button v-on:click=sendEvent>버튼</button></div>',
+    template : '<div>Right Component : <button v-on:click=sendEvent>두 번째 버튼</button><inner2></inner2></div>',
     methods: {
       sendEvent: function() {
         this.$emit('callpa');
       }
+    },
+    components : {
+      'inner2' : child2Inner
     }
   }
-
+  
   // 상위 컴포넌트 : root 컴포넌트
   new Vue({
     el: '#app',
