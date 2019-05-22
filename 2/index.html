@@ -56,8 +56,10 @@
   // 상위 컴포넌트 : root 컴포넌트
   new Vue({
     el: '#app',
-    data : {
-        message : 'Hello World'
+    data : function() {
+        return {
+          message : 'Hello World'
+        }
     },
     components: {
       'child-component': childComponent,
@@ -69,13 +71,14 @@
       },
       showAlert2 : function() {
         alert("second component");
+      },
+      setMessage : function(data) {
+        var msg = '이름은 ' + data.name + '이고, 나이는 ' + data.age;
+        this.message = msg;
       }
     },
-    mounted : function() {
-      eventBus.$on('innerCall', function(data) {
-        var msg = '이름은 ' + data.name + '이고, 나이는 ' + data.age;
-        alert(msg);
-      })
+    created : function() {
+      eventBus.$on('innerCall', this.setMessage)
     },
     updated : function() {
       console.log('updated');
