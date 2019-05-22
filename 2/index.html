@@ -15,11 +15,12 @@
     <child-component2 v-on:callpa="showAlert2">
 
     </child-component2>
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script>
+
+  var eventBus = new Vue();
 
   // 하위 컴포넌트 : childComponent
   var childComponent = {
@@ -32,7 +33,12 @@
   }
 
   var child2Inner = {
-    template : '<div>Right Component Inner Left Component<button>내부 버튼</button></div>'
+    template : '<div>Right Component Inner Left Component<button v-on:click=innerCall>내부 버튼</button></div>',
+    methods : {
+      innerCall : function() {
+        eventBus.$emit('innerCall', {name : '한스', age : 25});
+      }
+    }
   }
 
   var childComponent2 = {
@@ -46,14 +52,12 @@
       'inner2' : child2Inner
     }
   }
-  
+
   // 상위 컴포넌트 : root 컴포넌트
   new Vue({
     el: '#app',
-    data : function(){
-        return {
-          message : 'Hello World'
-        }
+    data : {
+        message : 'Hello World'
     },
     components: {
       'child-component': childComponent,
@@ -66,6 +70,15 @@
       showAlert2 : function() {
         alert("second component");
       }
+    },
+    mounted : function() {
+      eventBus.$on('innerCall', function(data) {
+        var msg = '이름은 ' + data.name + '이고, 나이는 ' + data.age;
+        alert(msg);
+      })
+    },
+    updated : function() {
+      console.log('updated');
     }
   })
 
