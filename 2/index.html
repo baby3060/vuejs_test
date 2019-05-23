@@ -11,7 +11,7 @@
   <div id="app">
     {{ message }}
     <!-- v-bind와 @bind 동일 -->
-    <child-component v-on:callpa="showAlert"></child-component>
+    <child-component v-bind:message="message" v-bind:age="8" v-on:callpa="showAlert"></child-component>
     <child-component2 v-on:callpa="showAlert2">
 
     </child-component2>
@@ -24,10 +24,24 @@
 
   // 하위 컴포넌트 : childComponent
   var childComponent = {
-    template : '<div>Left Component : <button v-on:click=sendEvent>첫 번째 버튼</button></div>',
+    template : '<div>Left Component({{message}}), {{age}} : <button v-on:click=sendEvent>첫 번째 버튼{{propObject.value}}</button></div>',
     methods: {
       sendEvent: function() {
         this.$emit('callpa');
+      }
+    },
+    props : {
+      message : String,
+      age : {
+        type : Number
+      },
+      propObject : {
+        type : Object,
+        default : function() {
+          return {
+            value : 'Hello'
+          }
+        }
       }
     }
   }
