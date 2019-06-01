@@ -1,0 +1,49 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>라우터 앱 테스트</h2>
+
+    <p>
+      <router-link to="/info">info</router-link>
+      <router-link to="/message">message</router-link>
+    </p>
+
+    <router-view></router-view>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script>
+  const Infotemp = { template : '<div>Info Template</div>'};
+    const Messagetemp = {
+      template : '<div>Message Is {{message}}</div>',
+      data : function() {
+        return {
+          message : "Hello World"
+        }
+      }
+    };
+
+    const routes = [
+      { path: '/info', component: Infotemp },
+      { path: '/message', component: Messagetemp }
+    ];
+
+    
+    const router = new VueRouter({
+      routes : routes
+    })
+
+    const app = new Vue({
+      router : router
+    }).$mount('#app')
+
+  </script>
+</body>
+</html>

@@ -16,4 +16,21 @@ VUE JS 학습 테스트
 >>> 하위 컴포넌트에 메소드를 매핑할 시(v-on:[메소드명]="[상위 메소드명]") 하위 컴포넌트의 메소드명에 대문자가 포함될 경우 $emit으로 불러올 수가 없었다(callPro).
 
 > 폴더 3
+>> 라우팅
+>>> IE 11에서는 VueRouter에서 routes를 선언하는 부분, Vue에서 router를 매핑하는 부분을 따로 지정해주지 않으면 안 됨.
+
+<pre>
+  <code>
+    const router = new VueRouter({
+      routes : routes
+    })
+
+    const app = new Vue({
+      router : router
+    }).$mount('#app')
+  </code>
+</pre>
+
+
+> 폴더 4
 >> 이벤트 및 반응성(computed, watch)
