@@ -23,31 +23,36 @@
     #menu > a.router-link-active {
       text-decoration: underline;
     }
+
+    #menu1 > a {
+      background-color : gray;
+      padding : 15px;
+    }
+
   </style>
 </head>
 <body>
   <div id="app">
-    <router-view name="Header"></router-view>
+
+    <header-component></header-component>
+
+    <p id="menu1">
+      <router-link :to="{path : '/' }">Main</router-link>
+      <router-link :to="{path : '/login' }">Login Named View</router-link>
+    </p>
     <router-view></router-view>
-    <router-view name="Footer"></router-view>
+
+    <footer-component></footer-component>
+
   </div>
 
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script>
 
-  const Header = {
-    template : '<div><h1>{{this.message}}</h1><h2>{{this.inform}}</h2><hr /></div>',
-    data : function() {
-      return {
-        message : '라우터 앱 테스트',
-        inform : '해당 영역은 Header입니다.'
-      }
-    }
-  }
-  const Footer = {template : '<div><hr />Footer 입니다.</div>'}
+  /* Router Inner Router */
   const HomeTemp = {template : `<div>
-                                  여기는 Home입니다.
+                                  여기는 Main입니다.
                                   <p id="menu">
                                     <router-link :to="{name : 'info', params : {id : 1211}}">info</router-link>
                                     <router-link :to="{name : 'message' }">message</router-link>
@@ -65,18 +70,31 @@
       }
     };
 
+    /* Router Inner Router */
+
+    const LoginHeader = {template : '<div>이것은 LoginHeader</div>'};
+    const LoginFooter = {template : '<div>이것은 LoginFooter</div>'};
+
+    const LoginBody = {
+      template : '<div><login-header />이것은 LoginBody<login-footer /></div>',
+      components : {
+        'login-header' : LoginHeader,
+        'login-footer' : LoginFooter,
+      }
+    };
+
     const routes = [
       {
         path : '/',
-        components : {
-          default : HomeTemp,
-          Header : Header,
-          Footer : Footer
-        },
+        component : HomeTemp,
         children : [
           {path : '/info/:id', component : InfoTemp, name : 'info'},
           {path : '/message', component : MessageTemp, name : 'message'}
         ]
+      },
+      {
+        path : '/login',
+        component : LoginBody
       }
     ];
 
@@ -84,11 +102,25 @@
       routes : routes
     })
 
+    const header = {
+      template : '<div><h1>{{this.message}}</h1><h2>{{this.inform}}</h2><hr /></div>',
+      data : function() {
+        return {
+          message : '라우터 앱 테스트',
+          inform : '해당 영역은 Header입니다.'
+        }
+      }
+    };
+    const footer = {template : '<div><hr />Footer 입니다.</div>'};
+
     new Vue({
       el : '#app',
-      router : router
+      router : router,
+      components: {
+        'header-component' : header,
+        'footer-component' : footer
+      }
     });
-
   </script>
 </body>
 </html>
