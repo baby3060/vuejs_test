@@ -4,24 +4,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    a {
+      color : black;
+      text-decoration: none;
+    }
+
+    #menu > a {
+      padding : 10px;
+      background-color : blue;
+      color : white;
+    }
+
+    #menu > a:hover {
+      background-color : red;
+    }
+
+    #menu > a.router-link-active {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
     <h1>라우터 앱 테스트</h2>
-
-    <p>
-      <router-link to="/info">info</router-link>
-      <router-link to="/message">message</router-link>
-    </p>
-
     <router-view></router-view>
   </div>
 
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script>
-  const Infotemp = { template : '<div>Info Template</div>'};
-    const Messagetemp = {
+    const HomeTemp = {template : `<div>
+                                    여기는 Home입니다.
+                                    <p id="menu">
+                                      <router-link :to="{path : '/info'}">info</router-link>
+                                      <router-link :to="{path : '/message' }">message</router-link>
+                                    </p>
+                                    <router-view></router-view>
+                                  </div>`}
+
+    const InfoTemp = {template : '<div>Info Template!!!{{this.$route.params.id}}</div>'};
+
+    const MessageTemp = {
       template : '<div>Message Is {{message}}</div>',
       data : function() {
         return {
@@ -31,18 +55,30 @@
     };
 
     const routes = [
-      { path: '/info', component: Infotemp },
-      { path: '/message', component: Messagetemp }
+      {
+        path : '/',
+        component : HomeTemp,
+        children : [
+          {
+            path : 'info',
+            component : InfoTemp
+          },
+          {
+            path : 'message',
+            component : MessageTemp
+          }
+        ]
+      }
     ];
 
-    
     const router = new VueRouter({
       routes : routes
     })
 
-    const app = new Vue({
+    new Vue({
+      el : '#app',
       router : router
-    }).$mount('#app')
+    });
 
   </script>
 </body>
