@@ -27,14 +27,25 @@
 </head>
 <body>
   <div id="app">
-    <h1>라우터 앱 테스트</h2>
+    <router-view name="Header"></router-view>
     <router-view></router-view>
+    <router-view name="Footer"></router-view>
   </div>
 
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script>
 
+  const Header = {
+    template : '<div><h1>{{this.message}}</h1><h2>{{this.inform}}</h2><hr /></div>',
+    data : function() {
+      return {
+        message : '라우터 앱 테스트',
+        inform : '해당 영역은 Header입니다.'
+      }
+    }
+  }
+  const Footer = {template : '<div><hr />Footer 입니다.</div>'}
   const HomeTemp = {template : `<div>
                                   여기는 Home입니다.
                                   <p id="menu">
@@ -57,10 +68,14 @@
     const routes = [
       {
         path : '/',
-        component : HomeTemp,
+        components : {
+          default : HomeTemp,
+          Header : Header,
+          Footer : Footer
+        },
         children : [
           {path : '/info/:id', component : InfoTemp, name : 'info'},
-          {path : '/message', component : MessageTemp, name : 'message'}    
+          {path : '/message', component : MessageTemp, name : 'message'}
         ]
       }
     ];
