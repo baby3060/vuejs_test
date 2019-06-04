@@ -28,11 +28,6 @@
 <body>
   <div id="app">
     <h1>라우터 앱 테스트</h2>
-    <p id="menu">
-      <router-link :to="{name : 'info', params : {id : 1211}}">info</router-link>
-      <router-link :to="{name : 'message' }">message</router-link>
-    </p>
-
     <router-view></router-view>
   </div>
 
@@ -40,6 +35,14 @@
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script>
 
+  const HomeTemp = {template : `<div>
+                                  여기는 Home입니다.
+                                  <p id="menu">
+                                    <router-link :to="{name : 'info', params : {id : 1211}}">info</router-link>
+                                    <router-link :to="{name : 'message' }">message</router-link>
+                                  </p>
+                                  <router-view></router-view>
+                                </div>`};
     const InfoTemp = {template : '<div>Info Template!!!{{this.$route.params.id}}</div>'};
 
     const MessageTemp = {
@@ -52,8 +55,14 @@
     };
 
     const routes = [
-      {path : '/info/:id', component : InfoTemp, name : 'info'},
-      {path : '/message', component : MessageTemp, name : 'message'}
+      {
+        path : '/',
+        component : HomeTemp,
+        children : [
+          {path : '/info/:id', component : InfoTemp, name : 'info'},
+          {path : '/message', component : MessageTemp, name : 'message'}    
+        ]
+      }
     ];
 
     const router = new VueRouter({
