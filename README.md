@@ -31,7 +31,5 @@ VUE JS 학습 테스트
   </code>
 </pre>
 
-
-
 > 폴더 4
 >> 이벤트 및 반응성(computed, watch)

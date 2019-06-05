@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #hello {
+      width : 100%;
+      font-size : 20pt; text-decoration : underline;
+    }
+
+    #world {
+      width : 100%;
+      background-color : yellow;
+    }
+
+    .container {
+      background-color : skyblue;
+      width : 900px;
+      height : 700px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div v-bind:class="container" >
+      <div v-bind:style="center">
+        <p v-bind:id="idMessage">{{message}}</p>
+        <p v-bind:id="idCase">
+          <button v-bind:disabled="isButtonDisabled">Button</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el : "#app",
+      data : function() {
+        return {
+          message : 'Hello World',
+          idMessage : 'hello',
+          idCase : 'world',
+          container : 'container',
+          isButtonDisabled : false,
+          center : 'width : 100%; margin : 0 auto; text-align : center; padding-top : 250px;'
+        }
+      }
+    });
+  </script>
+</body>
+</html>
