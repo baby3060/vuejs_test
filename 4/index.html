@@ -31,6 +31,10 @@
         <p v-bind:id="idCase">
           <button v-bind:disabled="isButtonDisabled">Button</button>
         </p>
+        {{isButtonDisabled?"버튼 Disable":"버튼 활성화"}}
+        <p>
+          바뀌기 전 값 : {{modifyValue}}, 바뀐 후 값 : {{joinerMessage}}
+        </p>
       </div>
     </div>
   </div>
@@ -41,12 +45,20 @@
       el : "#app",
       data : function() {
         return {
+          modifyValue : '이것은 바꿀 수 있는 값',
           message : 'Hello World',
           idMessage : 'hello',
           idCase : 'world',
           container : 'container',
           isButtonDisabled : false,
           center : 'width : 100%; margin : 0 auto; text-align : center; padding-top : 250px;'
+        }
+      },
+      computed : {
+        joinerMessage : function() {
+          let tempValue = this.modifyValue;
+
+          return tempValue.split(' ').join(", ");
         }
       }
     });
