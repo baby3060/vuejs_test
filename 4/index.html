@@ -33,8 +33,9 @@
         </p>
         {{isButtonDisabled?"버튼 Disable":"버튼 활성화"}}
         <p>
-          바뀌기 전 값 : {{modifyValue}}, 바뀐 후 값 : {{joinerMessage}}
+          바뀌기 전 값 : {{modifyValue}}, <br />바뀐 후 값 : {{joinerMessage}}
         </p>
+        <input v-model="message" />
       </div>
     </div>
   </div>
@@ -45,6 +46,7 @@
       el : "#app",
       data : function() {
         return {
+          originalModiVal : '이것은 바꿀 수 있는 값',
           modifyValue : '이것은 바꿀 수 있는 값',
           message : 'Hello World',
           idMessage : 'hello',
@@ -55,12 +57,20 @@
         }
       },
       computed : {
-        joinerMessage : function() {
-          let tempValue = this.modifyValue;
-
-          return tempValue.split(' ').join(", ");
+        joinerMessage : {
+          get : function() {
+            let tempValue = this.modifyValue;
+            return tempValue.split(' ').join(", ");
+          }
+        }
+      },
+      watch : {
+        message : function(newVal, oldVal) {
+          console.log("이전 값 : " + oldVal);
+          this.modifyValue = this.originalModiVal + newVal.toUpperCase();
         }
       }
+
     });
   </script>
 </body>

@@ -32,4 +32,11 @@ VUE JS 학습 테스트
 </pre>
 
 > 폴더 4
->> 이벤트 및 반응성(computed, watch)
+>> 이벤트 및 반응성(computed, watch), 지시자 사용
+>>> computed와 method는 캐싱의 유무와 값을 바꾸는 데 있어서 수동으로 호출할지(메소드), 자동으로 수정될지(computed)의 차이이다.
+>>> watch는 감시할 데이터를 지정하는 것이고(명령형), computed는 계산해야 하는 목표 데이터를 정의(선언형)
+>>> watch 속성은 HTTP 요청 후의 값 변경에서 사용
+
+
+> 폴더 5
+>> HTTP 통신
