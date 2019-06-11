@@ -36,8 +36,8 @@ VUE JS 학습 테스트
 >>> computed와 method는 캐싱의 유무와 값을 바꾸는 데 있어서 수동으로 호출할지(메소드), 자동으로 수정될지(computed)의 차이이다.
 >>> watch는 감시할 데이터를 지정하는 것이고(명령형), computed는 계산해야 하는 목표 데이터를 정의(선언형)
 >>> watch 속성은 HTTP 요청 후의 값 변경에서 사용
->>> v-if는 DOM 상 아예 지워버리는 것. v-show는 <code>display : none</code>으로만 설정 
-
+>>> v-if는 DOM 상 아예 지워버리는 것. v-show는 <code>display : none</code>으로만 설정
+>>> 버튼의 v-on 바인딩 시 해당 프로퍼티의 명을 그냥 작성하면 됨(this 붙일 필요 X)
 
 > 폴더 5
 >> HTTP 통신

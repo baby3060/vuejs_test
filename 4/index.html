@@ -21,6 +21,10 @@
       width : 900px;
       height : 700px;
     }
+
+    .classLeft {
+      text-align : left;
+    }
   </style>
 </head>
 <body>
@@ -30,12 +34,18 @@
         <p v-bind:id="idMessage">{{message}}</p>
         <p v-bind:id="idCase">
           <button v-bind:disabled="isButtonDisabled">Button</button>
+          <button v-on:click="clickedButton(originalMessage)">눌러지는 버튼</button>
         </p>
         {{isButtonDisabled?"버튼 Disable":"버튼 활성화"}}
         <p>
           바뀌기 전 값 : {{modifyValue}}, <br />바뀐 후 값 : {{joinerMessage}}
         </p>
         <input v-model="message" />
+        <h3 v-if="showFlag">Test</h3>
+        <ul v-bind:class="left">
+          <li v-for="fw in fwList">[{{fw.key}}] {{fw.name}}</li>
+        </ul>
+        <h3 v-show="showFlag">Test2</h3>
       </div>
     </div>
   </div>
@@ -49,14 +59,36 @@
           originalModiVal : '이것은 바꿀 수 있는 값',
           modifyValue : '이것은 바꿀 수 있는 값',
           message : 'Hello World',
+          originalMessage : 'Hello World',
           idMessage : 'hello',
           idCase : 'world',
           container : 'container',
-          isButtonDisabled : false,
-          center : 'width : 100%; margin : 0 auto; text-align : center; padding-top : 250px;'
+          isButtonDisabled : true,
+          center : 'width : 100%; margin : 0 auto; text-align : center; padding-top : 250px;',
+          showFlag : true,
+          left : 'classLeft',
+          fwList : [
+            {
+              key : '001',
+              name : 'vue.js'
+            },
+            {
+              key : '002',
+              name : 'spring framework'
+            },
+            {
+              key : '003',
+              name : 'angluarJS'
+            }
+          ]
         }
       },
-      computed : {
+      methods : {
+        clickedButton : function(msg) {
+          this.message = msg;
+          this.showFlag = !this.showFlag;
+        }
+      }, computed : {
         joinerMessage : {
           get : function() {
             let tempValue = this.modifyValue;
