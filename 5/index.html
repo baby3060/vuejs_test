@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <button v-on:click="getData">데이터 가져오기</button>
+    <p>
+      현재 페이지 번호 : {{pageNo}}
+    </p>
+    <p>
+      한 페이지 당 Row 갯수 : {{numOfRows}}
+    </p>
+    <p>
+      전체 카운트 : {{totalCount}}
+    </p>
+
+    <ul>
+      <li v-for="item in items">{{item}}</li>
+    </ul>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- IE에서는 Promise를 제공하지 않으므로, ES6 Promise CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+    new Vue({
+      el : '#app',
+      data : function() {
+        return {
+          numOfRows : 0,
+          totalCount : 0,
+          pageNo : 0,
+          items : []
+        }
+      },
+      watch : {
+        totalCount : function(newVal, oldVal) {
+          console.log(newVal);
+        }
+      },
+      methods : {
+        getData : function() {
+          let target = 'http://localhost:8383/composi_test/resources/sample_Data.json';
+          let self = this;
+          axios.get(target)
+                      .then(function(res) {
+                          if( res.data.response.header.resultMsg === "OK" ) {
+                            return res.data.response.body;
+                          } else {
+                            throw "결과의 상태가 OK가 아닙니다.";
+                          }
+                        })
+                      .catch(function(e){
+                        console.error(e);
+                      })
+                      .then(function(resBody){
+                        if( resBody === undefined ) {
+                          return;
+                        } else {
+                          self.setProps(resBody.numOfRows, resBody.pageNo, resBody.totalCount, resBody.items.item);
+                        }
+                      });
+        },
+        setProps : function(numOfRows, pageNo, totalCount, items) {
+          this.numOfRows = numOfRows;
+          this.pageNo = pageNo;
+          this.totalCount = totalCount;
+          this.items = items;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
