@@ -1,51 +1,21 @@
 <template lang="html">
-  <ul>
-    <li v-for="(data, index) in todoItems" :key="data.key" class="shadow">
+  <transition-group name="list" tag="ul">
+    <li v-for="(data, index) in propsdata" :key="data.key" class="shadow">
       <i class="checkBtn fa fa-check" aria-hidden="true"></i>
       {{data.value}}
       <span class="removeBtn" type="button" @click="removeTodo(data.key, index)">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
       </span>
     </li>
-
-  </ul>
+  </transition-group>
 </template>
 
 <script>
 export default {
-  data : function() {
-    return {
-      todoItems : []
-    }
-  },
+  props : ['propsdata'],
   methods : {
     removeTodo : function(key, index) {
-      localStorage.removeItem(key);
-      this.todoItems.splice(index, 1);
-    }
-  },
-  created : function() {
-    let storage = localStorage;
-    let storageLen = storage.length;
-
-    if( storageLen > 0 ) {
-
-      for( let i = 0; i < storageLen; i++ ) {
-        let localKey = storage.key(i);
-        if (localKey === 'loglevel:webpack-dev-server') continue;
-
-        this.todoItems.push({
-          key : storage.key(i),
-          value : storage.getItem(i)
-        });
-      }
-    } else {
-      for( let i = 0; i < 5; i++ ) {
-        this.todoItems.push({
-          key : i,
-          value : i + " : fasifisadifisadfiasdffffffffffffffffffffffffffffasidfisadfiaisdfsiifi"
-        });
-      }
+      this.$emit("removeTodoMain", key, index);
     }
   }
 }
@@ -88,5 +58,23 @@ export default {
 
   .shadow {
     box-shadow : 5px 10px 10px rgba(0, 0, 0, 0.03);
+  }
+
+  .list-item {
+    display : inline-block;
+    margin-right : 10px;
+  }
+
+  .list-move {
+    transition : transform 1s;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition : all 1s;
+  }
+
+  .list-enter, .list-leave-to {
+    opacity : 0;
+    transform : translateY(30px);
   }
 </style>
