@@ -45,3 +45,7 @@ VUE JS 학습 테스트
 
 > 폴더 6
 >> 싱글 파일 컴포넌트 체계(할일 관리 앱, CLI)
+>>> 폴더 7 학습(Vuex) 후 기존 코드에서 상태관리 추가해보기
+
+> 폴더 7
+>> Vuex 이해, Vuex 예제 https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart 학습 후 폴더 6에 Vuex 적용해보기
