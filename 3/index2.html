@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+
+    <board-component v-bind:board="board" v-for="board in boards" v-bind:key="board.key"></board-component>
+
+    <router-view></router-view>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script>
+    Vue.component('board-component', {
+      props : ['board'],
+      template : `
+        <div>
+          <b>[{{board.key}}]</b>
+          <router-link :to="{ name: 'board', params: { id: board.key }}">{{board.content}}</router-link>
+        </div>
+      `
+    });
+
+    const BoardView = {
+      data : function() {
+        return {
+          content : ''
+        }
+      },
+      props: ['id'],
+      template: '<div>번호 : {{id}}<p>내용 : <input v-model="content"></p><button @click="moveHome">홈</button><button @click="movePre">이전</button></div>',
+      watch : {
+        id : function(newVal, oldVal) {
+          let selBoard = this.getSelectBoard(this.id);
+          this.content = selBoard.content;
+        }
+        /*
+        // beforeRouteUpdate 대신 이걸 사용할 수도 있음()
+        , '$route' (to, from) {
+
+        }
+        */
+      },
+      // 경로 변경 catch
+      beforeRouteUpdate (to, from, next) {
+        // 항상 next()를 호출해줘야 함
+        next();
+      },
+      methods : {
+        getSelectBoard : (id) => {
+          return app.boards.find((element) => {
+            return element.key == id;
+          });
+        },
+        movePre : () => {
+          router.go(-1);
+        },
+        // Home으로 이동
+        moveHome : () => {
+          router.push("/");
+        }
+      },
+      // 새로 고침 후에도 내용을 채울 수 있도록 조치
+      mounted : function() {
+        // 안전하게 뒤로 미룸
+        this.$nextTick(function() {
+          let selBoard = this.getSelectBoard(this.id);
+          this.content = selBoard.content;
+        });
+      }
+    };
+
+    const router = new VueRouter({
+      routes: [
+        { path: '/:id', name: 'board', component: BoardView, props: true }
+      ]
+    });
+
+    const app = new Vue({
+      el : '#app',
+      data : function() {
+        return {
+          boards : []
+        }
+      },
+      router : router,
+      created : function() {
+        let temp = this.boards;
+
+        for( let i = 0; i < 10; i++ ) {
+          temp[i] = {
+            key : i,
+            content : (i + 1) + "번째 게시판 내용물"
+          }
+        }
+      },
+      watch : {
+        boards : function(newVal, oldVal) {
+          console.log("dididid");
+        }
+      }
+    })
+
+  </script>
+</body>
+</html>
