@@ -20,7 +20,7 @@
     </p>
 
     <ul>
-      <li v-for="item in items">{{item}}</li>
+      <li v-for="item in items">기준 년월일 : {{item.baseDate}}, 기준 시간 : {{item.baseTime}}, 측정결과 : [{{item.category}}]{{item.result}}</li>
     </ul>
   </div>
 
@@ -41,8 +41,20 @@
         }
       },
       watch : {
-        totalCount : function(newVal, oldVal) {
-          console.log(newVal);
+        items : function(newVal, oldVal) {
+          let self = this;
+          newVal.forEach(function(element) {
+            // 위치 관련 제거
+            delete element.nx;
+            delete element.ny;
+
+            delete element.fcstDate;
+
+            element.baseDate = self.getDateFormat(element.baseDate);
+            element.baseTime = self.getTimeFormat(element.baseTime);
+
+            self.makeResult(element);
+          });
         }
       },
       methods : {
@@ -73,6 +85,145 @@
           this.pageNo = pageNo;
           this.totalCount = totalCount;
           this.items = items;
+        },
+        getDateFormat : function(bDate) {
+          let temp = bDate + "";
+          temp = temp.substring(0, 4) + "-" + temp.substring(4, 6) + "-" + temp.substring(6);
+          return temp;
+        },
+        getTimeFormat : function(bTime) {
+          let temp = bTime + "";
+          temp = temp.substring(0, 2) + ":" + temp.substring(2);
+          return temp;
+        },
+        makeResult : function(item) {
+          let result = "";
+
+          if( item.category === "LGT" ) {
+            item.category = "낙뢰";
+            switch(item.fcstValue) {
+              case 0 :
+                result = "확률없음";
+                break;
+              case 1 :
+                result = "낮음";
+                break;
+              case 2 :
+                result = "보통";
+                break;
+              case 3 :
+                 result = "높음";
+                 break;
+            }
+
+          } else if( item.category === "PTY" ) {
+              item.category = "강수형태";
+
+              switch(item.fcstValue) {
+                case 0 :
+                  result = "없음";
+                  break;
+                case 1 :
+                  result = "비";
+                  break;
+                case 2 :
+                  result = "비/눈";
+                  break;
+                case 3 :
+                   result = "눈";
+                   break;
+              }
+          } else if( item.category === "RN1" ) {
+            item.category = "1시간 강수량";
+            result = item.fcstValue + "mm";
+          } else if( item.category === "SKY" ) {
+            item.category = "하늘상태";
+            switch(item.fcstValue) {
+              case 1 :
+                result = "맑음";
+                break;
+              case 2 :
+                result = "구름조금";
+                break;
+              case 3 :
+                result = "구름많음";
+                break;
+              case 4 :
+                 result = "흐림";
+                 break;
+            }
+          } else if( item.category === "T1H" ) {
+            item.category = "기온";
+            result = item.fcstValue + "℃";
+          } else if( item.category === "REH" ) {
+            item.category = "습도";
+            result = item.fcstValue + "%";
+          } else if( item.category === "UUU" ) {
+            item.category = "동서 풍향";
+            if( item.fcstValue > 0 ) {
+              result = "동쪽 방향으로 ";
+            } else {
+              result = "서쪽 방향으로 ";
+            }
+            result = result + Math.abs(item.fcstValue) + "m/s";
+          } else if( item.category === "VVV" ) {
+            item.category = "남북 풍향";
+            if( item.fcstValue > 0 ) {
+              result = "북쪽 방향으로 ";
+            } else {
+              result = "남쪽 방향으로 ";
+            }
+            result = result + Math.abs(item.fcstValue) + "m/s";
+          } else if( item.category === "VEC" ) {
+            item.category = "풍향";
+            if( item.fcstValue >= 315 ) {
+              result = "NW-N";
+            } else {
+              if( item.fcstValue >= 270 ) {
+                result = "W-NW";
+              } else {
+                if( item.fcstValue >= 225 ) {
+                  result = "SW-W";
+                } else {
+                  if( item.fcstValue >= 180 ) {
+                    result = "S-SW";
+                  } else {
+                    if( item.fcstValue >= 135 ) {
+                      result = "SE-S";
+                    } else {
+                      if( item.fcstValue >= 90 ) {
+                        result = "E-SE";
+                      } else {
+                        if( item.fcstValue >= 45 ) {
+                          result = "NE-E";
+                        } else {
+                          result = "N-NE";
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } else if( item.category === "WSD" ) {
+            item.category = "풍속";
+            if( item.fcstValue < 4 ) {
+              result = "매우 약함";
+            } else {
+              if( item.fcstValue >= 14 ) {
+                result = "매우 강";
+              } else {
+                if( item.fcstValue >= 9 ) {
+                  result = "강";
+                } else {
+                  result = "약간 강";
+                }
+              }
+            }
+          }
+
+          item.result = result;
+
         }
       }
     });
