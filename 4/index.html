@@ -42,9 +42,9 @@
         </p>
         <input v-model="message" />
         <h3 v-if="showFlag">Test</h3>
-        <ul v-bind:class="left">
-          <li v-for="fw in fwList">[{{fw.key}}] {{fw.name}}</li>
-        </ul>
+
+        <list-component v-bind:fw="fw" v-bind:idx="index" v-for="(fw, index) in fwList" :key="fw.key" v-on:setindex="selectedClick"></list-component>
+        <editor-component v-if="isSelected" v-bind:fw="fwList[selectedIdx]"></editor-component>
         <h3 v-show="showFlag">Test2</h3>
       </div>
     </div>
@@ -52,6 +52,21 @@
 
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script>
+    Vue.component('editor-component', {
+      props : ['fw'],
+      template : '<div><p>Key 값 : {{fw.key}}</p><p>해당 Value : <input v-model="fw.name" /></p></div>'
+    });
+
+    Vue.component('list-component', {
+      props : ['fw', 'idx'],
+      template : '<p @click="keyClick">[{{fw.key}}]=>{{fw.name}}</p>',
+      methods : {
+        keyClick : function() {
+          this.$emit("setindex", this.idx);
+        }
+      }
+    });
+
     new Vue({
       el : "#app",
       data : function() {
@@ -67,6 +82,7 @@
           center : 'width : 100%; margin : 0 auto; text-align : center; padding-top : 250px;',
           showFlag : true,
           left : 'classLeft',
+          selectedIdx : -1,
           fwList : [
             {
               key : '001',
@@ -87,13 +103,20 @@
         clickedButton : function(msg) {
           this.message = msg;
           this.showFlag = !this.showFlag;
+        },
+        selectedClick : function(idx) {
+          this.selectedIdx = idx;
         }
-      }, computed : {
+      },
+      computed : {
         joinerMessage : {
           get : function() {
             let tempValue = this.modifyValue;
             return tempValue.split(' ').join(", ");
           }
+        },
+        isSelected : function() {
+          return this.selectedIdx >= 0;
         }
       },
       watch : {
