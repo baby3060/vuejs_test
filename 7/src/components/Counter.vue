@@ -9,12 +9,14 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
+
 export default {
-  computed : {
-    count : function() {
-      return this.$store.state.count;
-    }
-  },
+  // 저장소에서 상태를 가져오는 가장 간단한 방법(computed)
+  computed : mapState({
+    count: state => state.count
+  }),
   methods: {
     increment : function() {
       this.$store.commit('increment');
