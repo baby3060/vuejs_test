@@ -18,7 +18,16 @@ const store = new Vuex.Store({
   },
   mutations: {
     increment: state => state.count++,
-    decrement: state => state.count--
+    incrementNum(state, n) {
+      state.count += n
+    },
+    incrementPay(state, payload) {
+      state.count += payload.amount
+    },
+    decrement: state => state.count--,
+    multiply(state, payload) {
+      state.count = state.count * payload.value
+    }
   },
   getters : {
     frontList : (state, getters) => {
