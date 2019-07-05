@@ -25,6 +25,10 @@ const store = new Vuex.Store({
       state.count += payload.amount
     },
     decrement: state => state.count--,
+    decrementPay(state, payload) {
+      state.count -= (payload.amount - payload.amount2);
+      // state.count -= payload;
+    },
     multiply(state, payload) {
       state.count = state.count * payload.value
     }
@@ -32,6 +36,21 @@ const store = new Vuex.Store({
   getters : {
     frontList : (state, getters) => {
       return state.fwList.filter(frameW => frameW.isFront)
+    }
+  },
+  actions : {
+    // 인자값으로 {commit}이 아닌 context를 넘겨서 context.commit과 같이 호출해도 됨
+    decrementAsync({commit, state}, payload) {
+      // 액션에서는 변이를 호출
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          commit('decrementPay', payload);
+          resolve()
+        }, 1000)
+      })
+    },
+    afterDecrement({dispatch, commit}) {
+      console.log("dididi");
     }
   }
 });
