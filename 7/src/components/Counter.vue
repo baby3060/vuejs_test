@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <p>{{count}}</p>
+    <p>{{count}}, {{modcnt}}</p>
     <p>
       <button type="button" name="button" @click="increment">+</button>
       <button type="button" name="button" @click="incrementNum(5)">5씩 더하기</button>
@@ -8,6 +8,7 @@
       <button type="button" name="button" @click="multi(3)">3씩 곱하기</button>
       <button type="button" name="button" @click="incrementObj">3씩 더하기</button>
       <button type="button" name="button" @click="decrement">-</button>
+      <button type="button" name="button" @click="incremod">내부값 더하기</button>
     </p>
   </div>
 </template>
@@ -21,7 +22,8 @@ import { mapActions} from 'vuex'
 export default {
   // 저장소에서 상태를 가져오는 가장 간단한 방법(computed)
   computed : mapState({
-    count: state => state.count
+    count: state => state.count,
+    modcnt : state => state.moduleA.modcount
   }),
   methods: {
     /*
@@ -51,7 +53,9 @@ export default {
         return this.$store.dispatch('afterDecrement');
       })
     },
-
+    incremod : function() {
+      this.$store.dispatch('increModAction');
+    },
     /*
       mapActions로 넘길 경우 payload 인자를 굳이 정하지 않아도 payload에 알아서 매칭됨
       여러 개의 인자를 넘겨야 할 경우 즉 payload를 사용할 경우에는 dispatch를 사용 하는 것이 좋음

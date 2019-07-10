@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Module1 from './modules/Module1'
 
 Vue.use(Vuex)
 
@@ -52,6 +53,9 @@ const store = new Vuex.Store({
     afterDecrement({dispatch, commit}) {
       console.log("dididi");
     }
+  },
+  modules : {
+    moduleA : Module1
   }
 });
 
