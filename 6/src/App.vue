@@ -4,7 +4,7 @@
       <md-card class="md-layout-item md-size-50 md-small-size-100" style="margin : 0 auto;">
         <TodoHeader />
         <TodoInput @addTodo="insertTodo"></TodoInput>
-        <TodoList :propsdata="todoItem" @removeTodoMain="removeTodo"></TodoList>
+        <TodoList :propsdata="todoItems" @removeTodoMain="removeTodo"></TodoList>
         <TodoFooter @clearAll="clearAll" />
       </md-card>
     </div>
@@ -28,6 +28,8 @@ import TodoHeader from './components/TodoHeader.vue'
 import TodoInput from './components/TodoInput.vue'
 import TodoFooter from './components/TodoFooter.vue'
 
+import { mapState } from 'vuex'
+
 export default {
   components : {
     'TodoHeader' : TodoHeader,
@@ -35,11 +37,9 @@ export default {
     'TodoList' : TodoList,
     'TodoFooter' : TodoFooter
   },
-  computed : {
-    todoItem : function() {
-      return this.$store.state.todoItems;
-    }
-  },
+  computed : mapState({
+    todoItems: state => state.todoItems
+  }),
   methods : {
     insertTodo : function(newTodoItem) {
       let key = this.$store.state.lastIndex;
