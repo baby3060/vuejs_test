@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import App from './App.vue'
-
+import Vue from 'vue';
+import App from './App.vue';
+import store from './store';
 import "@babel/polyfill";
 
 import { MdButton, MdField, MdCard, MdList, MdIcon, MdDialog } from 'vue-material/dist/components'
@@ -16,6 +16,7 @@ Vue.use(MdDialog)
 
 new Vue({
   el: '#app',
+  store,
   components: { App },
   template: '<App/>'
 })
