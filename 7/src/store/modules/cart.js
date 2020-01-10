@@ -10,12 +10,12 @@ const state = {
 const getters = {
   // Cart에 담겨져 있는 품목들
   cartProducts : (state, getters, rootState) => {
-    return state.items.map(({ id, stock }) => {
+    return state.items.map(({ id, quantity }) => {
       const product = rootState.products.all.find(product => product.id === id);
       return {
         title : product.title,
         price : product.price,
-        stock
+        quantity
       }
     });
   },
@@ -23,7 +23,7 @@ const getters = {
   // Cart에 담겨있는 품목들의 전체 금액 합계
   cartTotalPrice : (state, getters) => {
     return getters.cartProducts.reduce((total, product) => {
-      return total + (product.price * product.stock)
+      return total + (product.price * product.quantity)
     }, 0)
   }
 };
