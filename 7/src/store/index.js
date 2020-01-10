@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Module1 from './modules/Module1'
+import cart from './modules/cart'
+import products from './modules/products'
 
 Vue.use(Vuex)
+
+const debug = process.env.NODE_ENV !== 'production'
 
 const store = new Vuex.Store({
   state: {
@@ -55,7 +59,8 @@ const store = new Vuex.Store({
     }
   },
   modules : {
-    moduleA : Module1
+    cart,
+    products
   }
 });
 
