@@ -1,6 +1,6 @@
 <template lang="html">
   <transition-group name="list" tag="ul">
-    <li v-for="(data, index) in propsdata" :key="data.key" class="shadow">
+    <li v-for="(data, index) in todoItems" :key="data.key" class="shadow">
       <i class="checkBtn fa fa-check" aria-hidden="true"></i>
       {{data.value}}
       <span class="removeBtn" type="button" @click="removeTodo(data.key, index)">
@@ -11,11 +11,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  props : ['propsdata'],
+  computed : mapState({
+    todoItems: state => state.todoItems
+  }),
   methods : {
     removeTodo : function(key, index) {
-      this.$emit("removeTodoMain", key, index);
+      this.$store.commit('deleteTodo', index);
     }
   }
 }

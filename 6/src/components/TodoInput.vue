@@ -13,9 +13,9 @@
         <div class="md-layout-item md-small-size-100" style="text-align : right;">
           <md-field>
             <label>할 일?</label>
-            <md-input v-model="newTodoItem" v-on:keyup.enter="addValue"></md-input>
+            <md-input v-model="newTodoItem" v-on:keyup.enter="insertTodo"></md-input>
           </md-field>
-          <md-button class="md-fab md-mini md-primary" v-on:click="addValue">
+          <md-button class="md-fab md-mini md-primary" v-on:click="insertTodo">
             <md-icon>edit</md-icon>
           </md-button>
         </div>
@@ -34,12 +34,19 @@ export default {
     }
   },
   methods : {
-    addValue : function() {
-      var newValue = this.newTodoItem && this.newTodoItem.trim();
-      if(newValue === '') {
+    insertTodo : function() {
+      let newTodoItem = this.newTodoItem && this.newTodoItem.trim();
+      if(newTodoItem === '') {
         this.showAlert = true;
       } else {
-        this.$emit("addTodo", newValue);
+        let key = this.$store.state.lastIndex;
+
+        // state 변경
+        this.$store.commit('insertTodo', {
+          key : key,
+          value : newTodoItem
+        });
+
         this.clearInput();
       }
     },
